@@ -1,6 +1,5 @@
 package com.nebula.backend.nebulabackend.model;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -9,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
@@ -36,6 +37,10 @@ public class Notes {
     @Column(updatable = false)
     private Instant deletedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "folder_id")
+    private Folders folder;
+
     public Notes() {
         this.isDeleted = false;
     }
@@ -45,6 +50,7 @@ public class Notes {
         this.createdAt = Instant.now();
     }
 
+    
     public UUID getId() {
         return id;
     }
@@ -100,5 +106,13 @@ public class Notes {
 
     public void setDeletedAt(Instant deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public Folders getFolder() {
+        return folder;
+    }
+
+    public void setFolder(Folders folder) {
+        this.folder = folder;
     }
 }
