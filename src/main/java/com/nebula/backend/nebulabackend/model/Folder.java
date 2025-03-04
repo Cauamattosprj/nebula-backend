@@ -10,13 +10,13 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "folders")
-public class Folders {
+public class Folder {
     @Id
     private UUID id;
     private String title;
 
     @OneToMany(mappedBy = "folder")
-    private List<Notes> notes;
+    private List<Note> notes;
 
     public UUID getId() {
         return id;
@@ -34,11 +34,11 @@ public class Folders {
         this.title = title;
     }
 
-    public List<Notes> getNotes() {
+    public List<Note> getNotes() {
         return notes;
     }
 
-    public void setNotes(List<Notes> notes) {
+    public void setNotes(List<Note> notes) {
         this.notes = notes;
     }
 
