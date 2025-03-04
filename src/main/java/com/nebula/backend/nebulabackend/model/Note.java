@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "notes")
-public class Notes {
+public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -39,9 +39,9 @@ public class Notes {
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
-    private Folders folder;
+    private Folder folder;
 
-    public Notes() {
+    public Note() {
         this.isDeleted = false;
     }
 
@@ -108,11 +108,11 @@ public class Notes {
         this.deletedAt = deletedAt;
     }
 
-    public Folders getFolder() {
+    public Folder getFolder() {
         return folder;
     }
 
-    public void setFolder(Folders folder) {
+    public void setFolder(Folder folder) {
         this.folder = folder;
     }
 }
