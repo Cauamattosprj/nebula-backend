@@ -1,14 +1,12 @@
-package com.nebula.backend.nebulabackend.util;
-
-import org.springframework.http.HttpStatus;
+package com.nebula.backend.nebulabackend.model;
 
 public class ApiResponse<T> {
     private T data;
     private String message;
     private boolean success;
-    private HttpStatus statusCode;
+    private int statusCode;
 
-    public ApiResponse(T data, String message, boolean success, HttpStatus statusCode) {
+    public ApiResponse(T data, String message, boolean success, int statusCode) {
         this.data = data;
         this.message = message;
         this.success = success;
@@ -16,11 +14,11 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<T>(data, "Operação bem-sucedida", true, HttpStatus.OK);
+        return new ApiResponse<>(data, "Operation completed", true, 200);
     }
 
-    public static <T> ApiResponse<T> error(String message, HttpStatus statusCode) {
-        return new ApiResponse<T>(null, message, false, statusCode);
+    public static <T> ApiResponse<T> error(String message, int statusCode) {
+        return new ApiResponse<>(null, message, false, statusCode);
     }
 
     public T getData() {
@@ -47,12 +45,12 @@ public class ApiResponse<T> {
         this.success = success;
     }
 
-    public HttpStatus getStatusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(HttpStatus statusCode) {
+    public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
-    };    
-    
+    }
+
 }
