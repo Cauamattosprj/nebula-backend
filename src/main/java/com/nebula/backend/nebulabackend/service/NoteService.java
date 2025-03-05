@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.nebula.backend.nebulabackend.model.Note;
 import com.nebula.backend.nebulabackend.repository.NoteRepository;
+import com.nebula.backend.nebulabackend.exception.NoteNotFoundException;
 
 @Service
 public class NoteService {
@@ -29,8 +30,8 @@ public class NoteService {
         return noteRepository.findById(id);
     }
 
-    public Note updateNote(Note noteUpdates) {
-        return noteRepository.findById(noteUpdates.getId()).map(note -> {
+    public Note updateNote(UUID id, Note noteUpdates) {
+        return noteRepository.findById(id).map(note -> {
             if (noteUpdates.getTitle() != null && !noteUpdates.getTitle().isEmpty()) {
                 note.setTitle(noteUpdates.getTitle());
             }
@@ -43,6 +44,9 @@ public class NoteService {
     }
 
     public void deleteNoteById(UUID id) {
+        if (!noteRepository.existsById(id)) {
+            throw new NoteNotFoundException(id);
+        }
         noteRepository.deleteById(id);
     }
 }
