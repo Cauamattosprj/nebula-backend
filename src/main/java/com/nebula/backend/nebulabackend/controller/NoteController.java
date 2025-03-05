@@ -2,6 +2,7 @@ package com.nebula.backend.nebulabackend.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nebula.backend.nebulabackend.model.ApiResponse;
 import com.nebula.backend.nebulabackend.model.Note;
 import com.nebula.backend.nebulabackend.service.NoteService;
 
@@ -9,9 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,15 +19,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("notes")
 @CrossOrigin("*")
 public class NoteController {
-
-    @Autowired
     private NoteService noteService;
+
+    public NoteController(NoteService noteService) {
+        this.noteService = noteService;
+    }
 
     @GetMapping()
     public List<Note> getAllNotes() {
@@ -41,35 +41,28 @@ public class NoteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Note> updateNote(@RequestBody Note updatedNote) {
+    public ApiResponse<Note> updateNote(@PathVariable UUID id, @RequestBody Note updatedNote) {
         try {
-            noteService.updateNote(updatedNote);
-            return new ResponseEntity<>(updatedNote, HttpStatus.OK);
+            Note note = noteService.updateNote(id, updatedNote);
+            return ApiResponse.success(note);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ApiResponse.error("Error updating note", HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
     }
 
     @PostMapping()
-    public ResponseEntity<Note> createNote(@RequestBody Note newNote) {
+    public ApiResponse<Note> createNote(@RequestBody Note newNote) {
         try {
-            noteService.createNote(newNote);
-            return new ResponseEntity<>(newNote, HttpStatus.OK);
+            Note note = noteService.createNote(newNote);
+            return ApiResponse.success(note);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Note> deleteNote(@PathVariable UUID id) {
-        try {
-            noteService.deleteNoteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ApiResponse.error("Error creating note", HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ApiResponse<String> deleteNote(@PathVariable UUID id) {
+        noteService.deleteNoteById(id);
+        return ApiResponse.success(String.format("Note with id %s deleted", id));
+    }
 }
