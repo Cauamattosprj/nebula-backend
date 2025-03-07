@@ -29,8 +29,9 @@ public class FolderController {
     }
 
     @GetMapping()
-    public List<Folder> getAllFolders() {
-        return folderService.getAllFolders();
+    public ApiResponse<List<Folder>> getAllFolders() {
+        List<Folder> folders = folderService.getAllFolders();
+        return ApiResponse.success(folders);
     }
 
     @GetMapping("/{id}")
@@ -52,9 +53,8 @@ public class FolderController {
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponse<Optional<Folder>> deleteFolderById(@PathVariable UUID id) {
-        Optional<Folder> folder = folderService.getFolderById(id);
+    public ApiResponse<String> deleteFolderById(@PathVariable UUID id) {
         folderService.deleteFolderById(id);
-        return ApiResponse.success(folder);
+        return ApiResponse.success("Folder deleted");
     }
 }
