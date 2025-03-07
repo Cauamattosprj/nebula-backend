@@ -31,8 +31,8 @@ public class NoteController {
     }
 
     @GetMapping()
-    public List<Note> getAllNotes() {
-        return noteService.getAllNotes();
+    public ApiResponse<List<Note>> getAllNotes() {
+        return ApiResponse.success(noteService.getAllNotes());
     }
 
     @GetMapping("/{id}")
@@ -52,12 +52,8 @@ public class NoteController {
 
     @PostMapping()
     public ApiResponse<Note> createNote(@RequestBody Note newNote) {
-        try {
-            Note note = noteService.createNote(newNote);
-            return ApiResponse.success(note);
-        } catch (Exception e) {
-            return ApiResponse.error("Error creating note", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        }
+        Note note = noteService.createNote(newNote);
+        return ApiResponse.success(note);
     }
 
     @DeleteMapping("/{id}")
