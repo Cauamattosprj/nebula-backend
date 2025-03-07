@@ -1,7 +1,7 @@
 services:
 
   db:
-        container_name: postgres
+        container_name: postgres_nebula
         image: postgres:17
         ports:
             - "5432:5432"
