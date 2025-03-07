@@ -10,11 +10,18 @@ import com.nebula.backend.nebulabackend.model.ApiResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NoteNotFoundException.class)
-    public ResponseEntity<ApiResponse<String>> handleNoteNotFound(NoteNotFoundException e) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiResponse<String>> handleNoteNotFound(NotFoundException e) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ApiResponse.error(e.getMessage(), HttpStatus.NOT_FOUND.value()));
+    }
+
+    @ExceptionHandler(DuplicateTitleException.class)
+    public ResponseEntity<ApiResponse<String>> handleDuplicateTitle(DuplicateTitleException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ApiResponse.error(e.getMessage(), HttpStatus.CONFLICT.value()));
     }
 
     @ExceptionHandler(Exception.class)
