@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.nebula.backend.nebulabackend.model.Note;
 import com.nebula.backend.nebulabackend.repository.NoteRepository;
-import com.nebula.backend.nebulabackend.exception.NoteNotFoundException;
+import com.nebula.backend.nebulabackend.exception.DuplicateTitleException;
+import com.nebula.backend.nebulabackend.exception.NotFoundException;
 
 @Service
 public class NoteService {
@@ -18,8 +19,14 @@ public class NoteService {
         this.noteRepository = noteRepository;
     }
 
-    public Note createNote(Note note) {
-        return noteRepository.save(note);
+    public Note createNote(Note newNote) {
+        Optional<Note> existingNote = noteRepository.findByTitle(newNote.getTitle());
+
+        if (!existingNote.isEmpty()) {
+            throw new DuplicateTitleException(newNote.getTitle());
+        }
+
+        return noteRepository.save(newNote);
     }
 
     public List<Note> getAllNotes() {
@@ -45,7 +52,7 @@ public class NoteService {
 
     public void deleteNoteById(UUID id) {
         if (!noteRepository.existsById(id)) {
-            throw new NoteNotFoundException(id);
+            throw new NotFoundException(id);
         }
         noteRepository.deleteById(id);
     }
