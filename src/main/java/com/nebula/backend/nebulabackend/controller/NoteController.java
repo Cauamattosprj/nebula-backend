@@ -2,8 +2,11 @@ package com.nebula.backend.nebulabackend.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nebula.backend.nebulabackend.exception.NotFoundException;
 import com.nebula.backend.nebulabackend.model.ApiResponse;
+import com.nebula.backend.nebulabackend.model.Folder;
 import com.nebula.backend.nebulabackend.model.Note;
+import com.nebula.backend.nebulabackend.service.FolderService;
 import com.nebula.backend.nebulabackend.service.NoteService;
 
 import java.util.List;
@@ -21,21 +24,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@RequestMapping("notes")
+@RequestMapping("/api/notes")
 @CrossOrigin("*")
 public class NoteController {
     private NoteService noteService;
+    private FolderService folderService;
 
-    public NoteController(NoteService noteService) {
+    public NoteController(NoteService noteService, FolderService folderService) {
         this.noteService = noteService;
+        this.folderService = folderService;
     }
 
-    @GetMapping()
+    @GetMapping("/list")
     public ApiResponse<List<Note>> getAllNotes() {
         return ApiResponse.success(noteService.getAllNotes());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/list/{id}")
     public Optional<Note> getNoteById(@PathVariable UUID id) {
         return noteService.getNoteById(id);
     }
@@ -50,13 +55,34 @@ public class NoteController {
         }
     }
 
-    @PostMapping()
+    // create a note and associate it to a folder
+    // @PostMapping("/create/{folderId}")
+    // public ApiResponse<Note> createNoteInFolder(@PathVariable UUID folderId, @RequestBody Note newNote) {
+    //     Folder folder = folderService.getFolderById(folderId)
+    //             .orElseThrow(() -> new NotFoundException(folderId));
+
+    //     newNote.setFolder(folder);
+
+    //     Note savedNote = noteService.createNote(newNote);
+
+    //     return ApiResponse.success(savedNote);
+    // }
+
+    @PutMapping("/update/{noteId}/{folderId}")
+    public ApiResponse<Note> moveNoteToFolder(@PathVariable UUID noteId, @PathVariable UUID folderId) {
+        Optional<Folder> folder = folderService.getFolderById(folderId);
+        Optional<Note> note = noteService.getNoteById(folderId);
+
+        
+    }
+
+    @PostMapping("/create")
     public ApiResponse<Note> createNote(@RequestBody Note newNote) {
         Note note = noteService.createNote(newNote);
         return ApiResponse.success(note);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ApiResponse<String> deleteNote(@PathVariable UUID id) {
         noteService.deleteNoteById(id);
         return ApiResponse.success(String.format("Note with id %s deleted", id));
