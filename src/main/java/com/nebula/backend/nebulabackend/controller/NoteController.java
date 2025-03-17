@@ -45,7 +45,7 @@ public class NoteController {
         return noteService.getNoteById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ApiResponse<Note> updateNote(@PathVariable UUID id, @RequestBody Note updatedNote) {
         try {
             Note note = noteService.updateNote(id, updatedNote);
@@ -68,13 +68,6 @@ public class NoteController {
     //     return ApiResponse.success(savedNote);
     // }
 
-    @PutMapping("/update/{noteId}/{folderId}")
-    public ApiResponse<Note> moveNoteToFolder(@PathVariable UUID noteId, @PathVariable UUID folderId) {
-        Optional<Folder> folder = folderService.getFolderById(folderId);
-        Optional<Note> note = noteService.getNoteById(folderId);
-
-        
-    }
 
     @PostMapping("/create")
     public ApiResponse<Note> createNote(@RequestBody Note newNote) {
