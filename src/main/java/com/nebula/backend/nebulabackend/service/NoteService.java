@@ -45,6 +45,9 @@ public class NoteService {
             if (noteUpdates.getBody() != null && !noteUpdates.getBody().isEmpty()) {
                 note.setBody(noteUpdates.getBody());
             }
+            if (noteUpdates.getFolder() != null && noteUpdates.getFolder().getId() != null) {
+                note.setFolder(noteUpdates.getFolder());
+            }
 
             return noteRepository.save(note);
         }).orElseThrow(() -> new RuntimeException("Nota não encontrada!"));
