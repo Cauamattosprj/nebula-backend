@@ -37,16 +37,16 @@ public class NoteService {
         return noteRepository.findById(id);
     }
 
-    public Note updateNote(UUID id, Note noteUpdates) {
+    public Note updateNote(UUID id, Note updatedNoteData) {
         return noteRepository.findById(id).map(note -> {
-            if (noteUpdates.getTitle() != null && !noteUpdates.getTitle().isEmpty()) {
-                note.setTitle(noteUpdates.getTitle());
+            if (updatedNoteData.getTitle() != null && !updatedNoteData.getTitle().isEmpty()) {
+                note.setTitle(updatedNoteData.getTitle());
             }
-            if (noteUpdates.getBody() != null && !noteUpdates.getBody().isEmpty()) {
-                note.setBody(noteUpdates.getBody());
+            if (updatedNoteData.getBody() != null && !updatedNoteData.getBody().isEmpty()) {
+                note.setBody(updatedNoteData.getBody());
             }
-            if (noteUpdates.getFolder() != null && noteUpdates.getFolder().getId() != null) {
-                note.setFolder(noteUpdates.getFolder());
+            if (updatedNoteData.getFolder() != null && updatedNoteData.getFolder().getId() != null) {
+                note.setFolder(updatedNoteData.getFolder());
             }
 
             return noteRepository.save(note);
