@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.nebula.backend.nebulabackend.dto.FolderDTO;
 import com.nebula.backend.nebulabackend.exception.DuplicateTitleException;
 import com.nebula.backend.nebulabackend.exception.NotFoundException;
 import com.nebula.backend.nebulabackend.model.Folder;
@@ -19,14 +20,16 @@ public class FolderService {
         this.folderRepository = folderRepository;
     }
 
-    public Folder createFolder(Folder newFolder) {
+    public FolderDTO createFolder(Folder newFolder) {
         Optional<Folder> existingFolder = folderRepository.findByTitle(newFolder.getTitle());
 
         if (!existingFolder.isEmpty()) {
             throw new DuplicateTitleException(newFolder.getTitle());
         }
 
-        return folderRepository.save(newFolder);
+        Folder savedFolder = folderRepository.save(newFolder);
+
+        return new FolderDTO(savedFolder);
     }
 
     public List<Folder> getAllFolders() {
