@@ -50,7 +50,7 @@ public class NoteService {
             }
 
             return noteRepository.save(note);
-        }).orElseThrow(() -> new RuntimeException("Nota não encontrada!"));
+        }).orElseThrow(() -> new NotFoundException(id));
     }
 
     public void deleteNoteById(UUID id) {
