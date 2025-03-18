@@ -55,20 +55,6 @@ public class NoteController {
         }
     }
 
-    // create a note and associate it to a folder
-    // @PostMapping("/create/{folderId}")
-    // public ApiResponse<Note> createNoteInFolder(@PathVariable UUID folderId, @RequestBody Note newNote) {
-    //     Folder folder = folderService.getFolderById(folderId)
-    //             .orElseThrow(() -> new NotFoundException(folderId));
-
-    //     newNote.setFolder(folder);
-
-    //     Note savedNote = noteService.createNote(newNote);
-
-    //     return ApiResponse.success(savedNote);
-    // }
-
-
     @PostMapping("/create")
     public ApiResponse<Note> createNote(@RequestBody Note newNote) {
         Note note = noteService.createNote(newNote);
