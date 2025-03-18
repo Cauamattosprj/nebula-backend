@@ -3,6 +3,8 @@ package com.nebula.backend.nebulabackend.model;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +41,7 @@ public class Note {
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
+    @JsonBackReference
     private Folder folder;
 
     public Note() {
@@ -50,7 +53,6 @@ public class Note {
         this.createdAt = Instant.now();
     }
 
-    
     public UUID getId() {
         return id;
     }

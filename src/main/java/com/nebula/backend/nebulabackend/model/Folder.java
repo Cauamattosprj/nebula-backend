@@ -22,6 +22,7 @@ public class Folder {
     private String title;
 
     @OneToMany(mappedBy = "folder")
+    @JsonManagedReference
     private List<Note> notes;
 
     public UUID getId() {
