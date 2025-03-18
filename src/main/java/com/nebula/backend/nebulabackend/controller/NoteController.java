@@ -2,9 +2,7 @@ package com.nebula.backend.nebulabackend.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nebula.backend.nebulabackend.exception.NotFoundException;
 import com.nebula.backend.nebulabackend.model.ApiResponse;
-import com.nebula.backend.nebulabackend.model.Folder;
 import com.nebula.backend.nebulabackend.model.Note;
 import com.nebula.backend.nebulabackend.service.FolderService;
 import com.nebula.backend.nebulabackend.service.NoteService;
@@ -46,9 +44,9 @@ public class NoteController {
     }
 
     @PutMapping("/update/{id}")
-    public ApiResponse<Note> updateNote(@PathVariable UUID id, @RequestBody Note updatedNote) {
+    public ApiResponse<Note> updateNote(@PathVariable UUID id, @RequestBody Note updatedNoteData) {
         try {
-            Note note = noteService.updateNote(id, updatedNote);
+            Note note = noteService.updateNote(id, updatedNoteData);
             return ApiResponse.success(note);
         } catch (Exception e) {
             return ApiResponse.error("Error updating note", HttpStatus.INTERNAL_SERVER_ERROR.value());
