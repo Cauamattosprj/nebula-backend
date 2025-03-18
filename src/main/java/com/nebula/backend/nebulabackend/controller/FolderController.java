@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nebula.backend.nebulabackend.dto.FolderDTO;
 import com.nebula.backend.nebulabackend.model.ApiResponse;
 import com.nebula.backend.nebulabackend.model.Folder;
 import com.nebula.backend.nebulabackend.service.FolderService;
@@ -47,9 +48,9 @@ public class FolderController {
     }
 
     @PostMapping("/create")
-    public ApiResponse<Folder> createFolder(@RequestBody Folder newFolder) {
-        Folder folder = folderService.createFolder(newFolder);
-        return ApiResponse.success(folder);
+    public ApiResponse<FolderDTO> createFolder(@RequestBody Folder newFolder) {
+        FolderDTO folderDTO = folderService.createFolder(newFolder);
+        return ApiResponse.success(folderDTO);
     }
 
     @DeleteMapping("/delete/{id}")
