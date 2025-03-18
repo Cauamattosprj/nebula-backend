@@ -6,7 +6,6 @@ import com.nebula.backend.nebulabackend.dto.NoteDTO;
 import com.nebula.backend.nebulabackend.dto.UpdateNoteRequest;
 import com.nebula.backend.nebulabackend.model.ApiResponse;
 import com.nebula.backend.nebulabackend.model.Note;
-import com.nebula.backend.nebulabackend.service.FolderService;
 import com.nebula.backend.nebulabackend.service.NoteService;
 
 import java.util.List;
@@ -28,11 +27,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @CrossOrigin("*")
 public class NoteController {
     private NoteService noteService;
-    private FolderService folderService;
 
-    public NoteController(NoteService noteService, FolderService folderService) {
+    public NoteController(NoteService noteService) {
         this.noteService = noteService;
-        this.folderService = folderService;
     }
 
     @GetMapping("/list")
