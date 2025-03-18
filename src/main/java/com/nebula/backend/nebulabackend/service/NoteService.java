@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.nebula.backend.nebulabackend.model.Note;
+import com.nebula.backend.nebulabackend.repository.FolderRepository;
 import com.nebula.backend.nebulabackend.repository.NoteRepository;
 import com.nebula.backend.nebulabackend.exception.DuplicateTitleException;
 import com.nebula.backend.nebulabackend.exception.NotFoundException;
@@ -14,9 +15,11 @@ import com.nebula.backend.nebulabackend.exception.NotFoundException;
 @Service
 public class NoteService {
     private NoteRepository noteRepository;
+    private FolderRepository folderRepository;
 
-    public NoteService(NoteRepository noteRepository) {
+    public NoteService(NoteRepository noteRepository, FolderRepository folderRepository) {
         this.noteRepository = noteRepository;
+        this.folderRepository = folderRepository;
     }
 
     public Note createNote(Note newNote) {
