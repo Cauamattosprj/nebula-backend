@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.nebula.backend.nebulabackend.model.Note;
 import com.nebula.backend.nebulabackend.repository.FolderRepository;
 import com.nebula.backend.nebulabackend.repository.NoteRepository;
+import com.nebula.backend.nebulabackend.dto.NoteDTO;
+import com.nebula.backend.nebulabackend.dto.UpdateNoteRequest;
 import com.nebula.backend.nebulabackend.exception.DuplicateTitleException;
 import com.nebula.backend.nebulabackend.exception.NotFoundException;
 
@@ -40,20 +42,49 @@ public class NoteService {
         return noteRepository.findById(id);
     }
 
-    public Note updateNote(UUID id, Note updatedNoteData) {
-        return noteRepository.findById(id).map(note -> {
-            if (updatedNoteData.getTitle() != null && !updatedNoteData.getTitle().isEmpty()) {
-                note.setTitle(updatedNoteData.getTitle());
+    public Note updateNoteTitle(UUID id, String title) {
+        Note note = noteRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+
+        note.setTitle(title);
+
+        return noteRepository.save(note);
+    }
+
+    public Note updateNoteBody(UUID id, String body) {
+        Note note = noteRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+
+        note.setBody(body);
+
+        return noteRepository.save(note);
+    }
+
+    public Note updateNoteFolder(UUID id, UUID folderId) {
+        Note note = noteRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+
+        note.setFolder(folderRepository.findById(folderId).orElseThrow(() -> new NotFoundException(folderId)));
+
+        return noteRepository.save(note);
+    }
+
+    public NoteDTO updateNoteHandler(UUID id, UpdateNoteRequest updateNoteRequest) {
+        if (!updateNoteRequest.getTitle().isBlank() || !updateNoteRequest.getBody().isBlank()
+                || !updateNoteRequest.getFolderId().toString().isBlank()) {
+            if (!updateNoteRequest.getTitle().isBlank()) {
+                String newTitle = updateNoteRequest.getTitle();
+                updateNoteTitle(id, newTitle);
             }
-            if (updatedNoteData.getBody() != null && !updatedNoteData.getBody().isEmpty()) {
-                note.setBody(updatedNoteData.getBody());
+            if (!updateNoteRequest.getBody().isBlank()) {
+                String newBody = updateNoteRequest.getBody();
+                updateNoteBody(id, newBody);
             }
-            if (updatedNoteData.getFolder() != null && updatedNoteData.getFolder().getId() != null) {
-                note.setFolder(updatedNoteData.getFolder());
+            if (!updateNoteRequest.getFolderId().toString().isBlank()) {
+                UUID newFolderId = updateNoteRequest.getFolderId();
+                updateNoteFolder(id, newFolderId);
             }
 
-            return noteRepository.save(note);
-        }).orElseThrow(() -> new NotFoundException(id));
+            return noteRepository.findById(id).map(NoteDTO::new).orElseThrow(() -> new NotFoundException(id));
+        } else
+            throw new IllegalArgumentException("No valid field to update");
     }
 
     public void deleteNoteById(UUID id) {
