@@ -4,12 +4,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nebula.backend.nebulabackend.dto.NoteDTO;
 import com.nebula.backend.nebulabackend.dto.UpdateNoteRequest;
+import com.nebula.backend.nebulabackend.exception.NotFoundException;
 import com.nebula.backend.nebulabackend.model.ApiResponse;
 import com.nebula.backend.nebulabackend.model.Note;
 import com.nebula.backend.nebulabackend.service.NoteService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -38,8 +38,8 @@ public class NoteController {
     }
 
     @GetMapping("/list/{id}")
-    public Optional<Note> getNoteById(@PathVariable UUID id) {
-        return noteService.getNoteById(id);
+    public ApiResponse<Note> getNoteById(@PathVariable UUID id) {
+        return ApiResponse.success(noteService.getNoteById(id).orElseThrow(() -> new NotFoundException(id)));
     }
 
     @PutMapping("/update/{id}")
