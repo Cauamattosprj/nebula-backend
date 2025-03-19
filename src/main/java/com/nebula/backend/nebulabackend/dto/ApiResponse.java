@@ -1,4 +1,4 @@
-package com.nebula.backend.nebulabackend.model;
+package com.nebula.backend.nebulabackend.dto;
 
 public class ApiResponse<T> {
     private T data;

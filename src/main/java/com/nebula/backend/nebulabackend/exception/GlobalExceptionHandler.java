@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.nebula.backend.nebulabackend.model.ApiResponse;
+import com.nebula.backend.nebulabackend.dto.ApiResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nebula.backend.nebulabackend.dto.ApiResponse;
 import com.nebula.backend.nebulabackend.dto.FolderDTO;
-import com.nebula.backend.nebulabackend.model.ApiResponse;
 import com.nebula.backend.nebulabackend.model.Folder;
 import com.nebula.backend.nebulabackend.service.FolderService;
 
