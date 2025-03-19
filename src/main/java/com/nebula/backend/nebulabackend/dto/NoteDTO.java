@@ -20,7 +20,11 @@ public class NoteDTO {
         this.title = note.getTitle();
         this.body = note.getBody();
         this.userId = note.getUserId();
-        this.folder = new FolderDTOWithoutNotes(note.getFolder());
+        try {
+            this.folder = new FolderDTOWithoutNotes(note.getFolder());
+        } catch (NullPointerException e) {
+            this.folder = null;
+        }
         this.createdAt = note.getCreatedAt();
         this.isDeleted = note.isDeleted();
         this.deletedAt = note.getDeletedAt();
