@@ -38,8 +38,8 @@ public class NoteService {
         return noteRepository.findAll();
     }
 
-    public Optional<Note> getNoteById(UUID id) {
-        return noteRepository.findById(id);
+    public NoteDTO getNoteById(UUID id) {
+        return noteRepository.findById(id).map(NoteDTO::new).orElseThrow(() -> new NotFoundException(id));
     }
 
     public Note updateNoteTitle(UUID id, String title) {

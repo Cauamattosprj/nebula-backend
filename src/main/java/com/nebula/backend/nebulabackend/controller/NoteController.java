@@ -38,8 +38,8 @@ public class NoteController {
     }
 
     @GetMapping("/list/{id}")
-    public ApiResponse<Note> getNoteById(@PathVariable UUID id) {
-        return ApiResponse.success(noteService.getNoteById(id).orElseThrow(() -> new NotFoundException(id)));
+    public ApiResponse<NoteDTO> getNoteById(@PathVariable UUID id) {
+        return ApiResponse.success(noteService.getNoteById(id));
     }
 
     @PutMapping("/update/{id}")
