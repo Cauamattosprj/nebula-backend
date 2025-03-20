@@ -11,6 +11,7 @@ import com.nebula.backend.nebulabackend.service.NoteService;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,7 +34,7 @@ public class NoteController {
     }
 
     @GetMapping("/list")
-    public ApiResponse<List<Note>> getAllNotes() {
+    public ApiResponse<Stream<NoteDTO>> getAllNotes() {
         return ApiResponse.success(noteService.getAllNotes());
     }
 

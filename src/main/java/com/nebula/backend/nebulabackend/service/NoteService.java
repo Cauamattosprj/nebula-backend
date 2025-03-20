@@ -3,6 +3,7 @@ package com.nebula.backend.nebulabackend.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -34,8 +35,8 @@ public class NoteService {
         return noteRepository.save(newNote);
     }
 
-    public List<Note> getAllNotes() {
-        return noteRepository.findAll();
+    public Stream<NoteDTO> getAllNotes() {
+        return noteRepository.findAll().stream().map(NoteDTO::new);
     }
 
     public NoteDTO getNoteById(UUID id) {
