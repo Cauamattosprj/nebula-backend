@@ -18,6 +18,8 @@ import com.nebula.backend.nebulabackend.dto.ApiResponse;
 import com.nebula.backend.nebulabackend.dto.FolderDTO;
 import com.nebula.backend.nebulabackend.model.Folder;
 import com.nebula.backend.nebulabackend.service.FolderService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/folders")
@@ -29,7 +31,7 @@ public class FolderController {
         this.folderService = folderService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list/all")
     public ApiResponse<List<Folder>> getAllFolders() {
         List<Folder> folders = folderService.getAllFolders();
         return ApiResponse.success(folders);
