@@ -33,9 +33,14 @@ public class NoteController {
         this.noteService = noteService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list/all")
     public ApiResponse<Stream<NoteDTO>> getAllNotes() {
         return ApiResponse.success(noteService.getAllNotes());
+    }
+
+    @GetMapping("/list/notes-without-folders")
+    public ApiResponse<Stream<NoteDTO>> getAllNotesWithoutFolders() {
+        return ApiResponse.success(noteService.getAllNotesWithoutFolder());
     }
 
     @GetMapping("/list/{id}")

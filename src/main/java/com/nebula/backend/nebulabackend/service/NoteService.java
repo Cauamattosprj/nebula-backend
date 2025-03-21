@@ -39,6 +39,10 @@ public class NoteService {
         return noteRepository.findAll().stream().map(NoteDTO::new);
     }
 
+    public Stream<NoteDTO> getAllNotesWithoutFolder() {
+        return noteRepository.findAll().stream().filter(folder -> folder.getFolder() == null).map(NoteDTO::new);
+    }
+
     public NoteDTO getNoteById(UUID id) {
         return noteRepository.findById(id).map(NoteDTO::new).orElseThrow(() -> new NotFoundException(id));
     }
