@@ -5,15 +5,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nebula.backend.nebulabackend.dto.ApiResponse;
 import com.nebula.backend.nebulabackend.dto.NoteDTO;
 import com.nebula.backend.nebulabackend.dto.UpdateNoteRequest;
-import com.nebula.backend.nebulabackend.exception.NotFoundException;
 import com.nebula.backend.nebulabackend.model.Note;
 import com.nebula.backend.nebulabackend.service.NoteService;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/notes")
 @CrossOrigin("*")
 public class NoteController {
-    private NoteService noteService;
+    private final NoteService noteService;
 
     public NoteController(NoteService noteService) {
         this.noteService = noteService;

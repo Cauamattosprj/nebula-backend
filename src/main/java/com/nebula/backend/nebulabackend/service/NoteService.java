@@ -16,8 +16,8 @@ import com.nebula.backend.nebulabackend.exception.NotFoundException;
 
 @Service
 public class NoteService {
-    private NoteRepository noteRepository;
-    private FolderRepository folderRepository;
+    private final NoteRepository noteRepository;
+    private final FolderRepository folderRepository;
 
     public NoteService(NoteRepository noteRepository, FolderRepository folderRepository) {
         this.noteRepository = noteRepository;
