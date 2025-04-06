@@ -1,6 +1,5 @@
 package com.nebula.backend.nebulabackend.service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -72,24 +71,25 @@ public class NoteService {
     }
 
     public NoteDTO updateNoteHandler(UUID id, UpdateNoteRequest updateNoteRequest) {
-        if (!updateNoteRequest.getTitle().isBlank() || !updateNoteRequest.getBody().isBlank()
-                || !updateNoteRequest.getFolderId().toString().isBlank()) {
-            if (!updateNoteRequest.getTitle().isBlank()) {
-                String newTitle = updateNoteRequest.getTitle();
-                updateNoteTitle(id, newTitle);
+        boolean hasTitle = updateNoteRequest.getTitle() != null && !updateNoteRequest.getTitle().isBlank();
+        boolean hasBody = updateNoteRequest.getBody() != null && !updateNoteRequest.getBody().isBlank();
+        boolean hasFolder = updateNoteRequest.getFolderId() != null;
+
+        if (hasTitle || hasBody || hasFolder) {
+            if (hasTitle) {
+                updateNoteTitle(id, updateNoteRequest.getTitle());
             }
-            if (!updateNoteRequest.getBody().isBlank()) {
-                String newBody = updateNoteRequest.getBody();
-                updateNoteBody(id, newBody);
+            if (hasBody) {
+                updateNoteBody(id, updateNoteRequest.getBody());
             }
-            if (!updateNoteRequest.getFolderId().toString().isBlank()) {
-                UUID newFolderId = updateNoteRequest.getFolderId();
-                updateNoteFolder(id, newFolderId);
+            if (hasFolder) {
+                updateNoteFolder(id, updateNoteRequest.getFolderId());
             }
 
             return noteRepository.findById(id).map(NoteDTO::new).orElseThrow(() -> new NotFoundException(id));
-        } else
+        } else {
             throw new IllegalArgumentException("No valid field to update");
+        }
     }
 
     public void deleteNoteById(UUID id) {

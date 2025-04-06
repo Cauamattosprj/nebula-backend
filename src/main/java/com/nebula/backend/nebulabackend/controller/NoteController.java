@@ -50,12 +50,8 @@ public class NoteController {
 
     @PutMapping("/update/{id}")
     public ApiResponse<NoteDTO> updateNote(@PathVariable UUID id, @RequestBody UpdateNoteRequest updateNoteRequest) {
-        try {
             NoteDTO note = noteService.updateNoteHandler(id, updateNoteRequest);
             return ApiResponse.success(note);
-        } catch (Exception e) {
-            return ApiResponse.error("Error updating note", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        }
     }
 
     @PostMapping("/create")
