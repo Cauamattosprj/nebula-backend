@@ -1,6 +1,5 @@
 package com.nebula.backend.nebulabackend.service;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -11,7 +10,6 @@ import com.nebula.backend.nebulabackend.repository.FolderRepository;
 import com.nebula.backend.nebulabackend.repository.NoteRepository;
 import com.nebula.backend.nebulabackend.dto.NoteDTO;
 import com.nebula.backend.nebulabackend.dto.UpdateNoteRequest;
-import com.nebula.backend.nebulabackend.exception.DuplicateTitleException;
 import com.nebula.backend.nebulabackend.exception.NotFoundException;
 
 @Service
@@ -25,10 +23,12 @@ public class NoteService {
     }
 
     public Note createNote(Note newNote) {
-        Optional<Note> existingNote = noteRepository.findByTitle(newNote.getTitle());
+        String originalTitle = newNote.getTitle();
+        int existingNoteCounter = 2;
 
-        if (!existingNote.isEmpty()) {
-            throw new DuplicateTitleException(newNote.getTitle());
+        while (noteRepository.findByTitle(newNote.getTitle()).isPresent()) {
+            newNote.setTitle(originalTitle + " " + existingNoteCounter);
+            existingNoteCounter++;
         }
 
         return noteRepository.save(newNote);
