@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.nebula.backend.nebulabackend.utils.namingconflict.NameConflictResolver;
 import org.springframework.stereotype.Service;
 
 import com.nebula.backend.nebulabackend.dto.FolderDTO;
@@ -21,11 +22,10 @@ public class FolderService {
     }
 
     public FolderDTO createFolder(Folder newFolder) {
-        Optional<Folder> existingFolder = folderRepository.findByTitle(newFolder.getTitle());
+        List<String> existingTitles = folderRepository.findAllTitles();
 
-        if (!existingFolder.isEmpty()) {
-            throw new DuplicateTitleException(newFolder.getTitle());
-        }
+        String finalTitle = NameConflictResolver.resolveConflict(newFolder.getTitle(), existingTitles);
+        newFolder.setTitle(finalTitle);
 
         Folder savedFolder = folderRepository.save(newFolder);
 

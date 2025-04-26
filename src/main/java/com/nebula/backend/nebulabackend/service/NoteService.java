@@ -1,8 +1,10 @@
 package com.nebula.backend.nebulabackend.service;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import com.nebula.backend.nebulabackend.utils.namingconflict.NameConflictResolver;
 import org.springframework.stereotype.Service;
 
 import com.nebula.backend.nebulabackend.model.Note;
@@ -22,16 +24,16 @@ public class NoteService {
         this.folderRepository = folderRepository;
     }
 
-    public Note createNote(Note newNote) {
-        String originalTitle = newNote.getTitle();
-        int existingNoteCounter = 2;
+    public NoteDTO createNote(Note newNote) {
+        List<String> existingTitles = noteRepository.findAllTitles();
+        System.out.println(existingTitles);
 
-        while (noteRepository.findByTitle(newNote.getTitle()).isPresent()) {
-            newNote.setTitle(originalTitle + " " + existingNoteCounter);
-            existingNoteCounter++;
-        }
+        String finalTitle = NameConflictResolver.resolveConflict(newNote.getTitle(), existingTitles);
+        newNote.setTitle(finalTitle);
 
-        return noteRepository.save(newNote);
+        Note savedNote = noteRepository.save(newNote);
+
+        return new NoteDTO(savedNote);
     }
 
     public Stream<NoteDTO> getAllNotes() {
