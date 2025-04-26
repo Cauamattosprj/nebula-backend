@@ -52,8 +52,8 @@ public class NoteController {
     }
 
     @PostMapping("/create")
-    public ApiResponse<Note> createNote(@RequestBody Note newNote) {
-        Note note = noteService.createNote(newNote);
+    public ApiResponse<NoteDTO> createNote(@RequestBody Note newNote) {
+        NoteDTO note = noteService.createNote(newNote);
         return ApiResponse.success(note);
     }
 
