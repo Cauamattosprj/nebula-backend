@@ -30,6 +30,8 @@ public class Folder {
     @JsonManagedReference
     private List<Note> notes;
 
+    //    #TODO add a userId field
+
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
