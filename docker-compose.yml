@@ -1,15 +1,15 @@
 services:
 
   db:
-        container_name: postgres_nebula
-        image: postgres:17
-        ports:
-            - "5432:5432"
-        restart: always
-        environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-            - POSTGRES_DB=nebula
+    container_name: postgres_nebula
+    image: postgres:17
+    ports:
+        - "5432:5432"
+    restart: always
+    environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_DB=nebula
   adminer:
     image: adminer
     restart: always
