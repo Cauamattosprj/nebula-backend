@@ -72,7 +72,7 @@ public class NoteService {
 
     public NoteDTO updateNoteHandler(UUID id, UpdateNoteRequest updateNoteRequest) {
         boolean hasTitle = updateNoteRequest.getTitle() != null && !updateNoteRequest.getTitle().isBlank();
-        boolean hasBody = updateNoteRequest.getBody() != null && !updateNoteRequest.getBody().isBlank();
+        boolean hasBody = updateNoteRequest.getBody() != null;
         boolean hasFolder = updateNoteRequest.getFolderId() != null;
 
         if (hasTitle || hasBody || hasFolder) {
